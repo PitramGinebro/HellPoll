@@ -1,0 +1,34 @@
+# --- Unity Default ---
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[MemoryCaptures]/
+
+# --- User & Editor Settings (Importante para evitar los errores que viste) ---
+/[Uu]ser[Ss]ettings/
+.vs/
+.gradle/
+/[Aa]sset[Cc]leaner/
+
+# --- Proyectos y Soluciones (Se generan automáticamente) ---
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.IDB
+
+# --- Otros ---
+.DS_Store
+[Tt]humbs.db
+*.swp
