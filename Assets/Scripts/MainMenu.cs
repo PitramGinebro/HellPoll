@@ -19,6 +19,7 @@ public class MainMenu : MonoBehaviour
 
     public void playgame()
     {
+        // Cargamos la escena directamente
         SceneManager.LoadScene("level1");
     }
 }

@@ -1,20 +1,16 @@
 ﻿using UnityEngine;
 using ThreeDPool.Controllers;
 
-namespace ThreeDPool
+public class PocketsCollider : MonoBehaviour
 {
-    // Aquesta classe gestiona la col·lisió de les boles amb els forats de la taula.
-    class PocketsCollider : MonoBehaviour
+    private void OnTriggerEnter(Collider other)
     {
-        // Mètode que s'executa automàticament quan un objecte entra dins del Trigger del forat.
-        private void OnTriggerEnter(Collider collider)
+        CueBallController ball = other.GetComponent<CueBallController>();
+        if (ball != null)
         {
-            // Intenta obtenir el component CueBallController de l'objecte que ha entrat al forat.
-            CueBallController cueBall = collider.gameObject.GetComponent<CueBallController>();
-
-            // Si l'objecte té el component (és a dir, és una bola), crida al mètode BallPocketed.
-            if (cueBall != null)
-                cueBall.BallPocketed();
+            // Ahora 'BallType' ya no dará error porque es público en el otro script
+            ball.BallPocketed();
+            Debug.Log("Bola metida: " + ball.BallType);
         }
     }
 }

@@ -9,6 +9,43 @@
     "C:\\Program Files\\Unity\\Hub\\Editor\\6000.2.6f1\\Editor\\Data\\Resources\\PackageManager\\BuiltInPackages\\BuiltInPackagesCombined.sha1"
   ],
   "outputs": {
+    "com.unity.2d.sprite@1.0.0": {
+      "name": "com.unity.2d.sprite",
+      "displayName": "2D Sprite",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.sprite@331abd9a1e2f",
+      "fingerprint": "331abd9a1e2ff424a1ef2626e16936071ab7ce3d",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.feature.2d@2.0.1": {
+      "name": "com.unity.feature.2d",
+      "displayName": "2D",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.feature.2d@dd1ea8910f12",
+      "fingerprint": "dd1ea8910f12f021c166e8d0d78de44f1390ff6b",
+      "version": "2.0.1",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.feature.characters-animation@1.0.0": {
+      "name": "com.unity.feature.characters-animation",
+      "displayName": "3D Characters and Animation",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.feature.characters-animation@62cc2ae02a69",
+      "fingerprint": "62cc2ae02a691f0bf7ba8b57ffbef685bcfa0902",
+      "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.feature.worldbuilding@1.0.1": {
+      "name": "com.unity.feature.worldbuilding",
+      "displayName": "3D World Building",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.feature.worldbuilding@d247f3a881a3",
+      "fingerprint": "d247f3a881a38e10db11c29399be05dc6f27b501",
+      "version": "1.0.1",
+      "source": "builtin",
+      "testable": false
+    },
     "com.unity.multiplayer.center@1.0.0": {
       "name": "com.unity.multiplayer.center",
       "displayName": "Multiplayer Center",
@@ -16,16 +53,6 @@
       "fingerprint": "f3fb577b3546594b97b8cc34307cd621f60f1c73",
       "editorCompatibility": "6000.0.0a1",
       "version": "1.0.0",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.ugui@2.0.0": {
-      "name": "com.unity.ugui",
-      "displayName": "Unity UI",
-      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.ugui@e375ff18e90f",
-      "fingerprint": "e375ff18e90f823f9c3d4ffbc1532d6cde85ed48",
-      "editorCompatibility": "2019.2.0a1",
-      "version": "2.0.0",
       "source": "builtin",
       "testable": false
     },
@@ -298,6 +325,306 @@
       "displayName": "Hierarchy Core",
       "resolvedPath": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.2.6f1\\Editor\\Data\\Resources\\PackageManager\\BuiltInPackages\\com.unity.modules.hierarchycore",
       "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.probuilder@6.0.8": {
+      "name": "com.unity.probuilder",
+      "displayName": "ProBuilder",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.probuilder@2e7e30b1490d",
+      "fingerprint": "2e7e30b1490d82f5c6facbc43d873df9e478f34b",
+      "editorCompatibility": "6000.0.0a1",
+      "version": "6.0.8",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.polybrush@1.2.1": {
+      "name": "com.unity.polybrush",
+      "displayName": "Polybrush",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.polybrush@a5500a61e57c",
+      "fingerprint": "a5500a61e57c02c9ab2de6acffca80e8b7843fa4",
+      "editorCompatibility": "2022.3.0a1",
+      "version": "1.2.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.formats.fbx@5.1.5": {
+      "name": "com.unity.formats.fbx",
+      "displayName": "FBX Exporter",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.formats.fbx@86d1698ebb13",
+      "fingerprint": "86d1698ebb13fe759bd88af11aa0aec308c8c3a0",
+      "editorCompatibility": "2020.3.0a1",
+      "version": "5.1.5",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.terrain-tools@5.3.1": {
+      "name": "com.unity.terrain-tools",
+      "displayName": "Terrain Tools",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.terrain-tools@dbe886685ae0",
+      "fingerprint": "dbe886685ae0766dad124ea40242cd733fb31432",
+      "editorCompatibility": "6000.0.0a1",
+      "version": "5.3.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.animation.rigging@1.3.1": {
+      "name": "com.unity.animation.rigging",
+      "displayName": "Animation Rigging",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.animation.rigging@e106d1f78228",
+      "fingerprint": "e106d1f782287ccbe9035a7dd1ade8a864263ee6",
+      "editorCompatibility": "2022.2.0a9",
+      "version": "1.3.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.timeline@1.8.10": {
+      "name": "com.unity.timeline",
+      "displayName": "Timeline",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.timeline@7f8b2fb101b6",
+      "fingerprint": "7f8b2fb101b6053cc7472330401e94ff0c17b204",
+      "editorCompatibility": "2022.3.0a1",
+      "version": "1.8.10",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.cinemachine@3.1.5": {
+      "name": "com.unity.cinemachine",
+      "displayName": "Cinemachine",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.cinemachine@5342685532bb",
+      "fingerprint": "5342685532bbf7fa5b3a314c0b7ddba04ff17eff",
+      "editorCompatibility": "2022.3.0a1",
+      "version": "3.1.5",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.animation@12.0.3": {
+      "name": "com.unity.2d.animation",
+      "displayName": "2D Animation",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.animation@fd6eeea117b7",
+      "fingerprint": "fd6eeea117b7165f48ae1442d07c9a10c4d757f3",
+      "editorCompatibility": "6000.2.0a1",
+      "version": "12.0.3",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.pixel-perfect@5.1.1": {
+      "name": "com.unity.2d.pixel-perfect",
+      "displayName": "2D Pixel Perfect",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.pixel-perfect@09d99455b901",
+      "fingerprint": "09d99455b9018d7a152bb766d42b2569236a7b4a",
+      "editorCompatibility": "2021.3.0a1",
+      "version": "5.1.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.psdimporter@11.0.2": {
+      "name": "com.unity.2d.psdimporter",
+      "displayName": "2D PSD Importer",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.psdimporter@ee412f80a276",
+      "fingerprint": "ee412f80a276d6ee7acd681b5661a959561261be",
+      "editorCompatibility": "6000.2.0a10",
+      "version": "11.0.2",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.spriteshape@12.0.2": {
+      "name": "com.unity.2d.spriteshape",
+      "displayName": "2D SpriteShape",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.spriteshape@f4325e58176b",
+      "fingerprint": "f4325e58176b754d8b01f2936fa8cc95e464f2c1",
+      "editorCompatibility": "6000.2.0a10",
+      "version": "12.0.2",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.tilemap@1.0.0": {
+      "name": "com.unity.2d.tilemap",
+      "displayName": "2D Tilemap Editor",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.tilemap@aa5f5491174d",
+      "fingerprint": "aa5f5491174d692ae7c6327102931ff1f46f7d2a",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.2d.tilemap.extras@5.0.2": {
+      "name": "com.unity.2d.tilemap.extras",
+      "displayName": "2D Tilemap Extras",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.tilemap.extras@20479734ca02",
+      "fingerprint": "20479734ca029ad697e114aa9f7a8a1a6e79e1f4",
+      "editorCompatibility": "6000.2.0a1",
+      "version": "5.0.2",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.aseprite@2.0.2": {
+      "name": "com.unity.2d.aseprite",
+      "displayName": "2D Aseprite Importer",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.aseprite@dca42b450aa1",
+      "fingerprint": "dca42b450aa1933467340cfd7bce324ddf7b06b2",
+      "editorCompatibility": "6000.2.0a10",
+      "version": "2.0.2",
+      "source": "registry",
+      "testable": false
+    },
+    "com.autodesk.fbx@5.1.1": {
+      "name": "com.autodesk.fbx",
+      "displayName": "Autodesk FBX SDK for Unity",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.autodesk.fbx@5797ff6b31c7",
+      "fingerprint": "5797ff6b31c7c66189bffe1adc9cbf0ad5a9cbbf",
+      "editorCompatibility": "2020.3.0a1",
+      "version": "5.1.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.settings-manager@2.1.0": {
+      "name": "com.unity.settings-manager",
+      "displayName": "Settings Manager",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.settings-manager@41738c275190",
+      "fingerprint": "41738c27519039c335849eb78949382f4d7a3544",
+      "editorCompatibility": "2022.3.0a1",
+      "version": "2.1.0",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.shadergraph@17.2.0": {
+      "name": "com.unity.shadergraph",
+      "displayName": "Shader Graph",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.shadergraph@5516e0d97518",
+      "fingerprint": "5516e0d9751810ec70d19bca7a5251cbecd2b5ca",
+      "editorCompatibility": "6000.2.0a1",
+      "version": "17.2.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.splines@2.8.2": {
+      "name": "com.unity.splines",
+      "displayName": "Splines",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.splines@1cb7d86fc7ff",
+      "fingerprint": "1cb7d86fc7ffee63824ca302b2b8982178eeea83",
+      "editorCompatibility": "2022.3.0a1",
+      "version": "2.8.2",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.burst@1.8.24": {
+      "name": "com.unity.burst",
+      "displayName": "Burst",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.burst@f7a407abf4d5",
+      "fingerprint": "f7a407abf4d5abf19ce630824dcde261e02ed97e",
+      "editorCompatibility": "2021.3.0a1",
+      "version": "1.8.24",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.test-framework@1.6.0": {
+      "name": "com.unity.test-framework",
+      "displayName": "Test Framework",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.test-framework@40b8da2bd3e9",
+      "fingerprint": "40b8da2bd3e983adc3b78d9740a2a48ddb8f179f",
+      "editorCompatibility": "6000.0.44f1",
+      "version": "1.6.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.2d.common@11.0.1": {
+      "name": "com.unity.2d.common",
+      "displayName": "2D Common",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.2d.common@dd402daace1b",
+      "fingerprint": "dd402daace1b7dbeb70cb9e7ae044cc4b10f989a",
+      "editorCompatibility": "6000.2.0a9",
+      "version": "11.0.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.mathematics@1.3.2": {
+      "name": "com.unity.mathematics",
+      "displayName": "Mathematics",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.mathematics@8017b507cc74",
+      "fingerprint": "8017b507cc74bf0a1dd14b18aa860569f807314d",
+      "editorCompatibility": "2021.3.0a1",
+      "version": "1.3.2",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.collections@2.5.7": {
+      "name": "com.unity.collections",
+      "displayName": "Collections",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.collections@d49facba0036",
+      "fingerprint": "d49facba0036aa0e1508296262f9d93b44d1ab3b",
+      "editorCompatibility": "2022.3.20f1",
+      "version": "2.5.7",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.render-pipelines.core@17.2.0": {
+      "name": "com.unity.render-pipelines.core",
+      "displayName": "Scriptable Render Pipeline Core",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.render-pipelines.core@317e801bb3aa",
+      "fingerprint": "317e801bb3aaa64596e4ec903cb788a0dfb07788",
+      "editorCompatibility": "6000.2.0a1",
+      "version": "17.2.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.searcher@4.9.3": {
+      "name": "com.unity.searcher",
+      "displayName": "Searcher",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.searcher@1e17ce91558d",
+      "fingerprint": "1e17ce91558d1d9127554adc03d275f39a7466a2",
+      "editorCompatibility": "2019.1.0a1",
+      "version": "4.9.3",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.ext.nunit@2.0.5": {
+      "name": "com.unity.ext.nunit",
+      "displayName": "Custom NUnit",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.ext.nunit@031a54704bff",
+      "fingerprint": "031a54704bffe39e6a0324909f8eaa4565bdebf2",
+      "editorCompatibility": "2019.4.0a1",
+      "version": "2.0.5",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.nuget.mono-cecil@1.11.5": {
+      "name": "com.unity.nuget.mono-cecil",
+      "displayName": "Mono Cecil",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.nuget.mono-cecil@d78732e851eb",
+      "fingerprint": "d78732e851eb42273c8e4d97993d3a94b207e570",
+      "editorCompatibility": "2019.4.0a1",
+      "version": "1.11.5",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.test-framework.performance@3.1.0": {
+      "name": "com.unity.test-framework.performance",
+      "displayName": "Performance testing API",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.test-framework.performance@92d1d09a72ed",
+      "fingerprint": "92d1d09a72ed696fa23fd76c675b29d211664b50",
+      "editorCompatibility": "2020.3.0a1",
+      "version": "3.1.0",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.ugui@2.0.0": {
+      "name": "com.unity.ugui",
+      "displayName": "Unity UI",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.ugui@e375ff18e90f",
+      "fingerprint": "e375ff18e90f823f9c3d4ffbc1532d6cde85ed48",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "2.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.rendering.light-transport@1.0.1": {
+      "name": "com.unity.rendering.light-transport",
+      "displayName": "Unity Light Transport Library",
+      "resolvedPath": "C:\\Users\\rayom\\Desktop\\HellPoll\\Library\\PackageCache\\com.unity.rendering.light-transport@2c9279f90d7c",
+      "fingerprint": "2c9279f90d7c8dfb6e76e3f90b6b3be1cafabfbc",
+      "editorCompatibility": "2023.3.0b1",
+      "version": "1.0.1",
       "source": "builtin",
       "testable": false
     }

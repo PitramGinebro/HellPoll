@@ -34,6 +34,9 @@ namespace ThreeDPool.UIControllers
             EventManager.Subscribe(typeof(GameInputEvent).Name, OnGameInput);
             EventManager.Subscribe(typeof(ScoreUpdateEvent).Name, OnScoreUpdate);
             EventManager.Subscribe(typeof(GameStateEvent).Name, OnPlayerTurnChanged);
+
+            // CORRECCIÓN: Iniciar el juego automáticamente
+            OnPlayPressed();
         }
 
         private void OnDestroy()
@@ -47,9 +50,7 @@ namespace ThreeDPool.UIControllers
         private void OnScoreUpdate(object sender, IGameEvent gameEvent)
         {
             try {
-                // since the score update is made by the player, the sender of this event should be the player
                 Player player = (Player)sender;
-
                 PlayerUIController[] playerUIControllers = _playerGridGroup.GetComponentsInChildren<PlayerUIController>();
                 if (playerUIControllers != null && playerUIControllers.Length > 0)
                 {
@@ -57,10 +58,7 @@ namespace ThreeDPool.UIControllers
                     playerUIController.NameNScore.text = player.Name + " " + player.Score;
                 }
             }
-            catch (Exception)
-            {
-                
-            }
+            catch (Exception) { }
         }
 
         private void OnPlayerTurnChanged(object sender, IGameEvent gameEvent)
@@ -70,12 +68,9 @@ namespace ThreeDPool.UIControllers
             if (gameStateEvent.GameState == GameStateEvent.State.Complete)
             {
                 string winningText = string.Empty;
-
-                // not considering to show the draw message here, as everyone is a winner
                 if (GameManager.Instance.Winners.Length > 1)
                 {
                     winningText = "Game Complete, Winners are ";
-
                     foreach (var winner in GameManager.Instance.Winners)
                         winningText += winner + " ";
                 }
@@ -85,12 +80,9 @@ namespace ThreeDPool.UIControllers
                 }
 
                 GameManager.Instance.ChangeGameState(GameManager.GameState.Practise);
-
                 _gameComplete.text = winningText;
-
                 _pausePageGo.SetActive(true);
                 _quitButtonGo.SetActive(true);
-
                 StartCoroutine(ClearWinningMessage());
             }
             else {
@@ -136,13 +128,9 @@ namespace ThreeDPool.UIControllers
             GameManager.Instance.OnPaused();
         }
 
-        /// <summary>
-        /// this function is invoked by the Play Button in unity scene
-        /// </summary>
-        private void OnPlayPressed()
+        public void OnPlayPressed()
         {
-            _pausePageGo.SetActive(false);
-
+            if (_pausePageGo != null) _pausePageGo.SetActive(false);
             StartCoroutine(StartGame());
         }
 
@@ -153,21 +141,19 @@ namespace ThreeDPool.UIControllers
 
         private IEnumerator StartGame()
         {
-            // show loading text
             _loadingTextGo.SetActive(true);
+            yield return null; // Esperar un frame por seguridad
 
             if (GameManager.Instance.CurrGameState == GameManager.GameState.Practise)
             {
-                // give enough time for the ball, cue and camera to return back to its original position
                 EventManager.Notify(typeof(GameStateEvent).Name, this, new GameStateEvent() { GameState = GameStateEvent.State.Play });
             }
 
             GameManager.Instance.OnGetSet();
-            yield return new WaitForSeconds (3);
+            yield return new WaitForSeconds (2); // Tiempo de espera para que se coloquen las bolas
 
             if (GameManager.Instance.PrevGameState == GameManager.GameState.Practise)
             {
-                // reset score message
                 PlayerUIController[] playerUIControllers = _playerGridGroup.GetComponentsInChildren<PlayerUIController>();
                 if (playerUIControllers != null && playerUIControllers.Length > 0)
                 {
@@ -179,7 +165,6 @@ namespace ThreeDPool.UIControllers
 
                 if (GameManager.Instance.NumOfTimesPlayed == 1)
                 {
-                    // set first player as the one taking the turn
                     SetFirstPlayerToBreakShot();
                 }
             }
@@ -188,10 +173,7 @@ namespace ThreeDPool.UIControllers
                 GameManager.Instance.OnContinue();
             }
 
-            // hide loading text
             _loadingTextGo.SetActive(false);
-
-            // show the players
             _playerGridGroup.gameObject.SetActive(true);
         }
 

@@ -6,127 +6,113 @@ namespace ThreeDPool.Controllers
 {
     public class CameraController : MonoBehaviour
     {
-        [SerializeField]
-        private Transform _cueBall = null; // Referència a la bola blanca.
+        [SerializeField] private Transform _cueBall = null; 
+        
+        [Header("Configuración de Vista")]
+        [SerializeField] private float _rotationSpeed = 100f;
+        [SerializeField] private float _topViewHeight = 10f; // Qué tan alto sube la cámara
+        [SerializeField] private float _smoothTime = 5f; // Suavidad de transición
 
-        // Distància respecte a la bola blanca.
         private float _distFromCueBall;
+        private Vector3 _initialPos; 
+        private Vector3 _initialDir; 
+        private bool _isFreeLooking = false;
+        private Vector3 _targetPosition;
+        private Quaternion _targetRotation;
 
-        private Vector3 _initialPos; // Posició inicial de la càmera.
-        private Vector3 _initialDir; // Direcció inicial (forward) de la càmera.
-
-        // Aquesta és la posició sobre la qual rotar quan la bola es colpeja fins que s'atura.
-        // El valor per defecte és Vector3.one per evitar comportaments inesperats.
-        private Vector3 _posToRot = Vector3.one;
-
-        // S'executa en iniciar l'script.
         private void Start()
         {
-            // Desa en memòria la posició i rotació inicials.
+            if (_cueBall == null)
+            {
+                CueBallController controller = Object.FindFirstObjectByType<CueBallController>();
+                if (controller != null) _cueBall = controller.transform;
+            }
+            
             _initialPos = transform.position;
             _initialDir = transform.forward;
+            _distFromCueBall = (_cueBall != null) ? Vector3.Distance(_cueBall.position, transform.position) : 7f;
 
-            // Assegura que la distància sigui la mateixa amb la que hem començat.
-            _distFromCueBall = Vector3.Distance(_cueBall.position, transform.position);
-
-            // Subscripció als esdeveniments del joc.
             EventManager.Subscribe(typeof(GameInputEvent).Name, OnGameInputEvent);
             EventManager.Subscribe(typeof(CueBallActionEvent).Name, OnCueBallEvent);
             EventManager.Subscribe(typeof(GameStateEvent).Name, OnGameStateEvent);
         }
 
-        private void OnDestroy()
+        private void Update()
         {
-            // Cancel·la la subscripció als esdeveniments en destruir l'objecte per evitar errors de memòria.
-            EventManager.Unsubscribe(typeof(GameInputEvent).Name, OnGameInputEvent);
-            EventManager.Unsubscribe(typeof(CueBallActionEvent).Name, OnCueBallEvent);
-            EventManager.Unsubscribe(typeof(GameStateEvent).Name, OnGameStateEvent);
+            if (_cueBall == null) return;
+
+            // 1. VISTA CENITAL (Mantener Flecha Arriba o W)
+            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+            {
+                _isFreeLooking = true;
+                // Calculamos la posición justo encima de la mesa
+                _targetPosition = new Vector3(_cueBall.position.x, _topViewHeight, _cueBall.position.z);
+                _targetRotation = Quaternion.Euler(90, transform.eulerAngles.y, 0);
+                
+                // Transición suave
+                transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _smoothTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, Time.deltaTime * _smoothTime);
+            }
+            // 2. ROTACIÓN HORIZONTAL (Flechas Izquierda/Derecha)
+            else if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f)
+            {
+                _isFreeLooking = true;
+                transform.RotateAround(_cueBall.position, Vector3.up, Input.GetAxis("Horizontal") * _rotationSpeed * Time.deltaTime);
+            }
+            else if (_isFreeLooking && !Input.anyKey)
+            {
+                // Si dejamos de pulsar, volvemos a la vista de tiro gradualmente
+                _isFreeLooking = false;
+                ResetCameraBehindBall();
+            }
         }
 
-        // Gestiona l'acció de la càmera basada en els esdeveniments de la bola.
         private void OnCueBallEvent(object sender, IGameEvent gameEvent)
         {
-            CueBallActionEvent cueBallActionEvent = (CueBallActionEvent)gameEvent;
+            if (_cueBall == null) return;
+            CueBallActionEvent ev = (CueBallActionEvent)gameEvent;
 
-            switch (cueBallActionEvent.State)
+            if (ev.State == CueBallActionEvent.States.Stationary || ev.State == CueBallActionEvent.States.Default)
             {
-                case CueBallActionEvent.States.Stationary: // Quan la bola s'atura.
-                case CueBallActionEvent.States.Default:    // Estat per defecte.
-                    {
-                        float yPos = transform.position.y; // Guarda l'alçada actual.
-
-                        // Mou la càmera a prop de la bola blanca mantenint la distància de seguretat.
-                        transform.position = _cueBall.transform.position - transform.forward * _distFromCueBall;
-                        // Manté l'alçada original de la càmera.
-                        transform.position = new Vector3(transform.position.x, yPos, transform.position.z);
-
-                        // Fa que la càmera miri fixament a la bola blanca.
-                        transform.LookAt(_cueBall);
-
-                        // Reinicia el vector de rotació.
-                        _posToRot = Vector3.one;
-                    }
-                    break;
-                case CueBallActionEvent.States.Striked: // Quan la bola és colpejada.
-                    {
-                        // Estableix la posició actual de la bola com el nou centre de rotació.
-                        _posToRot = _cueBall.transform.position;
-                    }
-                    break;
+                _isFreeLooking = false;
+                ResetCameraBehindBall();
             }
         }
 
-        // Gestiona el moviment de la càmera segons l'entrada de l'usuari (Input).
+        private void ResetCameraBehindBall()
+        {
+            Vector3 dir = (transform.position - _cueBall.position).normalized;
+            dir.y = 0;
+            Vector3 finalPos = _cueBall.position + dir * _distFromCueBall;
+            finalPos.y = _initialPos.y; // Volvemos a la altura original de tiro
+
+            transform.position = Vector3.Lerp(transform.position, finalPos, Time.deltaTime * _smoothTime);
+            
+            // Mirar a la bola
+            Quaternion lookRot = Quaternion.LookRotation(_cueBall.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * _smoothTime);
+        }
+
         private void OnGameInputEvent(object sender, IGameEvent gameEvent)
         {
-            GameInputEvent gameInputEvent = (GameInputEvent)gameEvent;
+            // Bloqueamos el input del ratón/taco si estamos usando las flechas
+            if (_cueBall == null || _isFreeLooking) return;
 
-            switch (gameInputEvent.State)
+            GameInputEvent ev = (GameInputEvent)gameEvent;
+            if (ev.State == GameInputEvent.States.HorizontalAxisMovement)
             {
-                case GameInputEvent.States.HorizontalAxisMovement:
-                    {
-                        if (_posToRot == Vector3.one)
-                        {
-                            // Fa rotar la càmera al voltant de la bola blanca.
-                            transform.RotateAround(_cueBall.position, Vector3.up, 20f * gameInputEvent.axisOffset * Time.deltaTime);
-                        }
-                        else
-                        {
-                            // Fa rotar la càmera al voltant del punt on estava la bola quan va ser colpejada.
-                            transform.RotateAround(_posToRot, Vector3.up, 20f * gameInputEvent.axisOffset * Time.deltaTime);
-                        }
-                    }
-                    break;
-                case GameInputEvent.States.VerticalAxisMovement:
-                    {
-                        // No es fa res aquí de moment (per a possibles futures funcionalitats).
-                    }
-                    break;
+                transform.RotateAround(_cueBall.position, Vector3.up, 60f * ev.axisOffset * Time.deltaTime);
             }
         }
 
-        // Gestiona canvis d'estat globals del joc (ex: començar a jugar).
         private void OnGameStateEvent(object sender, IGameEvent gameEvent)
         {
-            GameStateEvent gameStateEvent = (GameStateEvent)gameEvent;
-            switch (gameStateEvent.GameState)
+            if (((GameStateEvent)gameEvent).GameState == GameStateEvent.State.Play)
             {
-                case GameStateEvent.State.Play:
-                    {
-                        // Col·loca la càmera a la posició i rotació inicials del joc.
-                        PlaceInInitialPosAndRot();
-                    }
-                    break;
+                _isFreeLooking = false;
+                transform.position = _initialPos;
+                transform.forward = _initialDir;
             }
-        }
-
-        // Mètode per restablir la càmera als valors de l'inici.
-        private void PlaceInInitialPosAndRot()
-        {
-            _posToRot = Vector3.one;
-
-            transform.position = _initialPos;
-            transform.forward = _initialDir;
         }
     }
 }
