@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 639039115274815694
-    m_Hash: 1761993227
+      ticks: 639040203318717828
+    m_Hash: 2976064535
   m_LockFileStatus:
     m_FilePath: C:/Users/rayom/Desktop/HellPoll/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 639039115274826532
-    m_Hash: 3081816965
+      ticks: 639040203318727856
+    m_Hash: 3768332357
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -4407,7 +4407,7 @@ m_ResolvedPackages:
     - 3.1.3
     - 3.1.4
     - 3.1.5
-    recommended: 2.10.5
+    recommended: 3.1.5
     deprecated: []
   dependencies:
   - name: com.unity.splines
@@ -4472,7 +4472,7 @@ m_ResolvedPackages:
   unityLifecycle:
     version: 2.10.4
     nextVersion: 
-    recommendedVersion: 
+    recommendedVersion: 3.1.0
     isDeprecated: 0
     deprecationMessage: 
     isDiscoverable: 1
@@ -5762,7 +5762,7 @@ m_ResolvedPackages:
     email: 
     url: 
   category: 
-  type: 
+  type: assets
   description: "This package provides Unity C# bindings to the Autodesk\xAE FBX\xAE
     SDK."
   errors: []
@@ -5820,7 +5820,7 @@ m_ResolvedPackages:
       violations: []
   hideInEditor: 1
   entitlements:
-    licensingModel: 0
+    licensingModel: 1
   isAssetStorePackage: 0
   datePublishedTicks: 638464332400000000
   documentationUrl: https://docs.unity3d.com/Packages/com.autodesk.fbx@5.1/manual/index.html
@@ -5908,7 +5908,7 @@ m_ResolvedPackages:
       violations: []
   hideInEditor: 1
   entitlements:
-    licensingModel: 0
+    licensingModel: 1
   isAssetStorePackage: 0
   datePublishedTicks: 638792046006940000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.settings-manager@2.1/manual/index.html

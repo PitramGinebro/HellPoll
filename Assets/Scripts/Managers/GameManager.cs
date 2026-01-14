@@ -47,7 +47,6 @@ namespace ThreeDPool.Managers
             if (_gameUIScreen != null)
                 _gameUIScreen.CreatePlayerUI();
 
-            // Iniciamos la colocación de bolas
             OnPlay();
         }
 
@@ -78,7 +77,6 @@ namespace ThreeDPool.Managers
             if (_rackTransform == null) _rackTransform = GameObject.Find("RackTransform")?.transform;
             if (_rackTransform == null) return;
 
-            // Limpiar bolas viejas antes de instanciar nuevas
             foreach (Transform child in _rackTransform) Destroy(child.gameObject);
 
             GameObject prefab = Resources.Load(_gameType.ToString() + "Rack", typeof(GameObject)) as GameObject;
@@ -90,10 +88,9 @@ namespace ThreeDPool.Managers
 
         public void ReadyForNextRound()
         {
-            // Reducimos el contador de bolas en movimiento
             if (NumOfBallsStriked > 0) NumOfBallsStriked--;
 
-            // Si ya no hay bolas moviéndose, preparamos el siguiente tiro
+            // Si el contador llega a 0 o menos, forzamos el siguiente turno
             if (NumOfBallsStriked <= 0)
             {
                 NumOfBallsStriked = 0;
@@ -103,15 +100,10 @@ namespace ThreeDPool.Managers
 
         private void CalculateThePointAndNextTurn()
         {
-            // IMPORTANTE: Esto reactiva el Cue (palo) enviando el evento Stationary
+            // Notificamos explícitamente que todo se ha detenido para reactivar el taco
             EventManager.Notify(typeof(CueBallActionEvent).Name, this, new CueBallActionEvent() { State = CueBallActionEvent.States.Stationary });
             
-            // Lógica de cambio de turno o puntos (Hell Pool entrará aquí)
-            if (_players.Count > 0)
-            {
-                Player currPlayer = _players.Peek();
-                // Si metió bola, se queda el turno. Si no, cambia. (Lógica simplificada para test)
-            }
+            Debug.Log("Turno finalizado. Preparando siguiente tiro...");
         }
 
         public void OnPaused() { ChangeGameState(GameState.Pause); }

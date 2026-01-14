@@ -71,6 +71,12 @@ namespace ThreeDPool.Controllers
             {
                 GameManager.Instance.AddToBallHitOutList(this);
                 PlaceBallInInitialPos();
+                
+                // Si la blanca cae al suelo, también necesitamos resetear el estado
+                if (_ballType == CueBallType.White)
+                {
+                    NotifyStationary();
+                }
             }
         }
 
@@ -79,10 +85,10 @@ namespace ThreeDPool.Controllers
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
             if (rigidbody == null) return;
 
-            // Si cae al vacío, respawn
             if (transform.position.y < -5.0f && _ballType == CueBallType.White)
             {
                 PlaceBallInInitialPos();
+                NotifyStationary();
             }
 
             if ((_currState == CueBallActionEvent.States.Placing) && rigidbody.IsSleeping())
@@ -119,18 +125,18 @@ namespace ThreeDPool.Controllers
             if (_ballType == CueBallType.White)
             {
                 PlaceBallInInitialPos();
+                NotifyStationary(); // Avisar que la blanca ya está lista tras entrar en el hoyo
+                GameManager.Instance.ReadyForNextRound(); // Forzar el fin de turno
             }
             else
             {
-                // CAMBIO CLAVE: En lugar de desactivar, movemos la bola lejos y quitamos física
-                // Esto evita que la cámara colapse al perder la referencia
                 Rigidbody rb = GetComponent<Rigidbody>();
                 if (rb != null)
                 {
                     rb.linearVelocity = Vector3.zero;
-                    rb.isKinematic = true; // Desactivar gravedad y física
+                    rb.isKinematic = true; 
                 }
-                transform.position = new Vector3(0, -50f, 0); // Mandar al "infierno" del mapa
+                transform.position = new Vector3(0, -50f, 0); 
             }
         }
 
@@ -139,20 +145,28 @@ namespace ThreeDPool.Controllers
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.isKinematic = false; // Reactivar física
+                rb.isKinematic = false; 
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
             transform.position = new Vector3(_initialPos.x, _initialPos.y + 0.2f, _initialPos.z);
             IsPocketedInPrevTurn = false;
             _currState = CueBallActionEvent.States.Placing;
+            
+            // Forzar que el contador de bolas moviéndose baje a cero
             GameManager.Instance.NumOfBallsStriked = 0;
+        }
+
+        private void NotifyStationary()
+        {
+            _currState = CueBallActionEvent.States.Stationary;
+            EventManager.Notify(typeof(CueBallActionEvent).Name, this, new CueBallActionEvent() { State = CueBallActionEvent.States.Stationary });
         }
 
         public void PlaceBallInPosWhilePractise()
         {
             PlaceBallInInitialPos();
-            EventManager.Notify(typeof(CueBallActionEvent).Name, this, new CueBallActionEvent() { State = CueBallActionEvent.States.Stationary });
+            NotifyStationary();
         }
     }
 }

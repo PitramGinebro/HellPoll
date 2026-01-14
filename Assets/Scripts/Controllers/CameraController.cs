@@ -10,8 +10,9 @@ namespace ThreeDPool.Controllers
         
         [Header("Configuración de Vista")]
         [SerializeField] private float _rotationSpeed = 100f;
-        [SerializeField] private float _topViewHeight = 10f; // Qué tan alto sube la cámara
-        [SerializeField] private float _smoothTime = 5f; // Suavidad de transición
+        [SerializeField] private float _topViewHeight = 12f; // Altura para la vista W (ajústalo en el Inspector)
+        [SerializeField] private float _smoothTime = 5f; 
+        [SerializeField] private float _shootingDistance = 5f; // Distancia estándar detrás de la bola
 
         private float _distFromCueBall;
         private Vector3 _initialPos; 
@@ -30,7 +31,10 @@ namespace ThreeDPool.Controllers
             
             _initialPos = transform.position;
             _initialDir = transform.forward;
-            _distFromCueBall = (_cueBall != null) ? Vector3.Distance(_cueBall.position, transform.position) : 7f;
+            
+            // Si la distancia inicial es muy corta, forzamos una distancia mínima de 5
+            _distFromCueBall = (_cueBall != null) ? Vector3.Distance(_cueBall.position, transform.position) : _shootingDistance;
+            if(_distFromCueBall < 2f) _distFromCueBall = _shootingDistance;
 
             EventManager.Subscribe(typeof(GameInputEvent).Name, OnGameInputEvent);
             EventManager.Subscribe(typeof(CueBallActionEvent).Name, OnCueBallEvent);
@@ -41,29 +45,36 @@ namespace ThreeDPool.Controllers
         {
             if (_cueBall == null) return;
 
-            // 1. VISTA CENITAL (Mantener Flecha Arriba o W)
+            // 1. VISTA CENITAL (W o Flecha Arriba)
             if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
             {
                 _isFreeLooking = true;
-                // Calculamos la posición justo encima de la mesa
+                
+                // Calculamos la posición arriba (usando _topViewHeight correctamente)
                 _targetPosition = new Vector3(_cueBall.position.x, _topViewHeight, _cueBall.position.z);
+                
+                // Rotación mirando hacia abajo (90 grados en X)
                 _targetRotation = Quaternion.Euler(90, transform.eulerAngles.y, 0);
                 
-                // Transición suave
                 transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _smoothTime);
                 transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, Time.deltaTime * _smoothTime);
             }
-            // 2. ROTACIÓN HORIZONTAL (Flechas Izquierda/Derecha)
+            // 2. ROTACIÓN HORIZONTAL
             else if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f)
             {
                 _isFreeLooking = true;
                 transform.RotateAround(_cueBall.position, Vector3.up, Input.GetAxis("Horizontal") * _rotationSpeed * Time.deltaTime);
             }
+            // 3. RETORNO AUTOMÁTICO
             else if (_isFreeLooking && !Input.anyKey)
             {
-                // Si dejamos de pulsar, volvemos a la vista de tiro gradualmente
-                _isFreeLooking = false;
                 ResetCameraBehindBall();
+                
+                // Si ya estamos muy cerca de la posición final, dejamos de procesar el retorno
+                if (Vector3.Distance(transform.position, _targetPosition) < 0.01f)
+                {
+                    _isFreeLooking = false;
+                }
             }
         }
 
@@ -74,30 +85,34 @@ namespace ThreeDPool.Controllers
 
             if (ev.State == CueBallActionEvent.States.Stationary || ev.State == CueBallActionEvent.States.Default)
             {
-                _isFreeLooking = false;
-                ResetCameraBehindBall();
+                // Al detenerse la bola, marcamos que debe reubicarse
+                _isFreeLooking = true; 
             }
         }
 
         private void ResetCameraBehindBall()
         {
+            // Calculamos la dirección actual respecto a la bola para mantener el ángulo horizontal
             Vector3 dir = (transform.position - _cueBall.position).normalized;
-            dir.y = 0;
-            Vector3 finalPos = _cueBall.position + dir * _distFromCueBall;
-            finalPos.y = _initialPos.y; // Volvemos a la altura original de tiro
+            dir.y = 0; // Aplanamos el vector para que no se incline
+            
+            if (dir == Vector3.zero) dir = -_cueBall.forward; // Por seguridad
 
-            transform.position = Vector3.Lerp(transform.position, finalPos, Time.deltaTime * _smoothTime);
+            // Posición ideal: detrás de la bola a la altura inicial
+            _targetPosition = _cueBall.position + dir * _distFromCueBall;
+            _targetPosition.y = _initialPos.y; 
+
+            transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _smoothTime);
             
             // Mirar a la bola
             Quaternion lookRot = Quaternion.LookRotation(_cueBall.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * _smoothTime);
         }
 
+        // ... (Resto de métodos OnGameInputEvent y OnGameStateEvent igual que antes)
         private void OnGameInputEvent(object sender, IGameEvent gameEvent)
         {
-            // Bloqueamos el input del ratón/taco si estamos usando las flechas
             if (_cueBall == null || _isFreeLooking) return;
-
             GameInputEvent ev = (GameInputEvent)gameEvent;
             if (ev.State == GameInputEvent.States.HorizontalAxisMovement)
             {
