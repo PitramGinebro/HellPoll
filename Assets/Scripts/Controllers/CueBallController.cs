@@ -71,12 +71,7 @@ namespace ThreeDPool.Controllers
             {
                 GameManager.Instance.AddToBallHitOutList(this);
                 PlaceBallInInitialPos();
-                
-                // Si la blanca cae al suelo, también necesitamos resetear el estado
-                if (_ballType == CueBallType.White)
-                {
-                    NotifyStationary();
-                }
+                if (_ballType == CueBallType.White) NotifyStationary();
             }
         }
 
@@ -125,11 +120,14 @@ namespace ThreeDPool.Controllers
             if (_ballType == CueBallType.White)
             {
                 PlaceBallInInitialPos();
-                NotifyStationary(); // Avisar que la blanca ya está lista tras entrar en el hoyo
-                GameManager.Instance.ReadyForNextRound(); // Forzar el fin de turno
+                NotifyStationary();
+                GameManager.Instance.ReadyForNextRound();
             }
             else
             {
+                // SUMAR PUNTO AL GAMEMANAGER
+                GameManager.Instance.AddScore(1);
+
                 Rigidbody rb = GetComponent<Rigidbody>();
                 if (rb != null)
                 {
@@ -152,8 +150,6 @@ namespace ThreeDPool.Controllers
             transform.position = new Vector3(_initialPos.x, _initialPos.y + 0.2f, _initialPos.z);
             IsPocketedInPrevTurn = false;
             _currState = CueBallActionEvent.States.Placing;
-            
-            // Forzar que el contador de bolas moviéndose baje a cero
             GameManager.Instance.NumOfBallsStriked = 0;
         }
 
@@ -161,12 +157,6 @@ namespace ThreeDPool.Controllers
         {
             _currState = CueBallActionEvent.States.Stationary;
             EventManager.Notify(typeof(CueBallActionEvent).Name, this, new CueBallActionEvent() { State = CueBallActionEvent.States.Stationary });
-        }
-
-        public void PlaceBallInPosWhilePractise()
-        {
-            PlaceBallInInitialPos();
-            NotifyStationary();
         }
     }
 }

@@ -469,6 +469,7 @@
 "Assets/Scripts/Managers/GameManager.cs"
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/PocketsCollider.cs"
+"Assets/Scripts/ScoreUI.cs"
 "Assets/Scripts/Singleton.cs"
 "Assets/Scripts/States/AIPlayerStates/TakeAShotState.cs"
 "Assets/Scripts/States/AIPlayerStates/WaitingState.cs"

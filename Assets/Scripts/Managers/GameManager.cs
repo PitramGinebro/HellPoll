@@ -29,6 +29,9 @@ namespace ThreeDPool.Managers
         public int NumOfTimesPlayed { private set; get; }
         public int NumOfBallsStriked;
 
+        // NUEVAS VARIABLES DE PUNTUACIÓN
+        public int CurrentScore { get; private set; }
+
         public GameState CurrGameState { get { return _currGameState; } }
         public GameState PrevGameState { get { return _prevGameState; } }
         public Queue<Player> Players { get { return _players; } }
@@ -57,6 +60,7 @@ namespace ThreeDPool.Managers
             _ballsHitOut.Clear();
             _ballsPocketed.Clear();
             NumOfBallsStriked = 0;
+            CurrentScore = 0; 
             NumOfTimesPlayed++;
 
             foreach (var player in _players) player.ResetScore();
@@ -72,6 +76,7 @@ namespace ThreeDPool.Managers
             PlaceBallBasedOnGameType();
         }
 
+        // --- FUNCIÓN RECUPERADA PARA EVITAR EL ERROR CS0103 ---
         private void PlaceBallBasedOnGameType()
         {
             if (_rackTransform == null) _rackTransform = GameObject.Find("RackTransform")?.transform;
@@ -86,11 +91,16 @@ namespace ThreeDPool.Managers
             }
         }
 
+        public void AddScore(int points)
+        {
+            CurrentScore += points;
+            Debug.Log("PUNTOS: " + CurrentScore);
+        }
+
         public void ReadyForNextRound()
         {
             if (NumOfBallsStriked > 0) NumOfBallsStriked--;
 
-            // Si el contador llega a 0 o menos, forzamos el siguiente turno
             if (NumOfBallsStriked <= 0)
             {
                 NumOfBallsStriked = 0;
@@ -100,12 +110,10 @@ namespace ThreeDPool.Managers
 
         private void CalculateThePointAndNextTurn()
         {
-            // Notificamos explícitamente que todo se ha detenido para reactivar el taco
             EventManager.Notify(typeof(CueBallActionEvent).Name, this, new CueBallActionEvent() { State = CueBallActionEvent.States.Stationary });
-            
-            Debug.Log("Turno finalizado. Preparando siguiente tiro...");
         }
 
+        // --- FUNCIONES PARA LA UI (GameUIScreen) ---
         public void OnPaused() { ChangeGameState(GameState.Pause); }
         public void OnContinue() { ChangeGameState(GameState.Play); }
         public void OnGetSet() { ChangeGameState(GameState.GetSet); }
