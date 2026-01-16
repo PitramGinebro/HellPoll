@@ -21,14 +21,12 @@ namespace ThreeDPool.Controllers
         public bool IsPocketedInPrevTurn;
         public CueBallType BallType { get { return _ballType; } }
 
-        // --- SOLUCIÓN PARA EL SPAWNEO ---
         private void Awake()
         {
-            // Si al aparecer en el juego la bola no tiene el script de estado, se lo ponemos nosotros
+            // Auto-inyección del script de estado para asegurar que el sistema de cartas funcione
             if (GetComponent<EstadoBola>() == null)
             {
                 gameObject.AddComponent<EstadoBola>();
-                Debug.Log("Equipo: He inyectado el script EstadoBola automáticamente en " + gameObject.name);
             }
         }
 
@@ -114,6 +112,7 @@ namespace ThreeDPool.Controllers
             }
         }
 
+        // --- LÓGICA DE DISPARO CON MEJORAS ROGUELIKE ---
         private void OnStriked(float forceGathered)
         {
             if (_ballType == CueBallType.White)
@@ -121,16 +120,55 @@ namespace ThreeDPool.Controllers
                 GameManager.Instance.NumOfBallsStriked++;
                 Rigidbody rigidBody = gameObject.GetComponent<Rigidbody>();
 
-                // ROGUELIKE: Comprobar fuerza extra
                 float multiplicadorFuerza = 1f;
+                Vector3 direccionDisparo = Camera.main.transform.forward;
+
                 EstadoBola estado = GetComponent<EstadoBola>();
-                if (estado != null && estado.tieneFuerzaExtra)
+                if (estado != null)
                 {
-                    multiplicadorFuerza = 2.5f; 
+                    // Mejora de FUERZA
+                    if (estado.tieneFuerzaExtra) multiplicadorFuerza = 2.5f;
+
+                    // Mejora de PRECISIÓN (Aimbot)
+                    if (estado.tienePrecision)
+                    {
+                        GameObject bolaObjetivo = EncontrarBolaCercanaALaMira();
+                        if (bolaObjetivo != null)
+                        {
+                            Vector3 haciaBola = (bolaObjetivo.transform.position - transform.position).normalized;
+                            // Mezclamos la dirección de la cámara con la de la bola para un "imán" suave
+                            direccionDisparo = Vector3.Lerp(direccionDisparo, haciaBola, 0.6f);
+                            Debug.Log("Asistencia de precisión aplicada sobre: " + bolaObjetivo.name);
+                        }
+                    }
                 }
 
-                rigidBody.AddForce(Camera.main.transform.forward * _force * forceGathered * multiplicadorFuerza, ForceMode.Force);
+                rigidBody.AddForce(direccionDisparo * _force * forceGathered * multiplicadorFuerza, ForceMode.Force);
             }
+        }
+
+        // Busca qué bola tenemos delante para ayudar al disparo
+        private GameObject EncontrarBolaCercanaALaMira()
+        {
+            float anguloCorte = 20f; // Solo ayuda si apuntamos "cerca"
+            GameObject mejorBola = null;
+            
+            CueBallController[] todasLasBolas = Object.FindObjectsByType<CueBallController>(FindObjectsSortMode.None);
+            
+            foreach (var bola in todasLasBolas)
+            {
+                if (bola.BallType == CueBallType.White) continue;
+
+                Vector3 direccionABola = (bola.transform.position - transform.position).normalized;
+                float angulo = Vector3.Angle(Camera.main.transform.forward, direccionABola);
+
+                if (angulo < anguloCorte)
+                {
+                    anguloCorte = angulo;
+                    mejorBola = bola.gameObject;
+                }
+            }
+            return mejorBola;
         }
 
         public void BallPocketed()
@@ -145,7 +183,6 @@ namespace ThreeDPool.Controllers
             }
             else
             {
-                // ROGUELIKE: Mandamos el estado de la bola al sumar puntos
                 EstadoBola estado = GetComponent<EstadoBola>();
                 GameManager.Instance.AddScore(1, estado);
 
@@ -173,7 +210,6 @@ namespace ThreeDPool.Controllers
             _currState = CueBallActionEvent.States.Placing;
             GameManager.Instance.NumOfBallsStriked = 0;
 
-            // ROGUELIKE: Limpiar cartas al reaparecer
             EstadoBola estado = GetComponent<EstadoBola>();
             if (estado != null) estado.ResetearEstado();
         }
