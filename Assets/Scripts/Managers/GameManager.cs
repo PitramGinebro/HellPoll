@@ -29,7 +29,6 @@ namespace ThreeDPool.Managers
         public int NumOfTimesPlayed { private set; get; }
         public int NumOfBallsStriked;
 
-        // NUEVAS VARIABLES DE PUNTUACIÓN
         public int CurrentScore { get; private set; }
 
         public GameState CurrGameState { get { return _currGameState; } }
@@ -76,7 +75,6 @@ namespace ThreeDPool.Managers
             PlaceBallBasedOnGameType();
         }
 
-        // --- FUNCIÓN RECUPERADA PARA EVITAR EL ERROR CS0103 ---
         private void PlaceBallBasedOnGameType()
         {
             if (_rackTransform == null) _rackTransform = GameObject.Find("RackTransform")?.transform;
@@ -91,16 +89,29 @@ namespace ThreeDPool.Managers
             }
         }
 
-        public void AddScore(int points)
+        // MODIFICACIÓN: Ahora los puntos se multiplican según la bola que entra
+        public void AddScore(int points, EstadoBola bolaQueEntro)
         {
-            CurrentScore += points;
-            Debug.Log("PUNTOS: " + CurrentScore);
+            float multiplicador = 1f;
+
+            if (bolaQueEntro != null)
+            {
+                multiplicador = bolaQueEntro.multiplicadorPuntos;
+                
+                if (bolaQueEntro.esAngelical)
+                {
+                    Debug.Log("¡EFECTO ANGELICAL! Deberías robar una carta.");
+                    // Aquí llamaremos al robo de cartas más adelante
+                }
+            }
+
+            CurrentScore += Mathf.RoundToInt(points * multiplicador);
+            Debug.Log("PUNTOS: " + CurrentScore + " (Multiplicador x" + multiplicador + ")");
         }
 
         public void ReadyForNextRound()
         {
             if (NumOfBallsStriked > 0) NumOfBallsStriked--;
-
             if (NumOfBallsStriked <= 0)
             {
                 NumOfBallsStriked = 0;
@@ -113,7 +124,6 @@ namespace ThreeDPool.Managers
             EventManager.Notify(typeof(CueBallActionEvent).Name, this, new CueBallActionEvent() { State = CueBallActionEvent.States.Stationary });
         }
 
-        // --- FUNCIONES PARA LA UI (GameUIScreen) ---
         public void OnPaused() { ChangeGameState(GameState.Pause); }
         public void OnContinue() { ChangeGameState(GameState.Play); }
         public void OnGetSet() { ChangeGameState(GameState.GetSet); }

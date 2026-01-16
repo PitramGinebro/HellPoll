@@ -21,6 +21,17 @@ namespace ThreeDPool.Controllers
         public bool IsPocketedInPrevTurn;
         public CueBallType BallType { get { return _ballType; } }
 
+        // --- SOLUCIÓN PARA EL SPAWNEO ---
+        private void Awake()
+        {
+            // Si al aparecer en el juego la bola no tiene el script de estado, se lo ponemos nosotros
+            if (GetComponent<EstadoBola>() == null)
+            {
+                gameObject.AddComponent<EstadoBola>();
+                Debug.Log("Equipo: He inyectado el script EstadoBola automáticamente en " + gameObject.name);
+            }
+        }
+
         private void Start()
         {
             _initialPos = transform.position;
@@ -109,7 +120,16 @@ namespace ThreeDPool.Controllers
             {
                 GameManager.Instance.NumOfBallsStriked++;
                 Rigidbody rigidBody = gameObject.GetComponent<Rigidbody>();
-                rigidBody.AddForce(Camera.main.transform.forward * _force * forceGathered, ForceMode.Force);
+
+                // ROGUELIKE: Comprobar fuerza extra
+                float multiplicadorFuerza = 1f;
+                EstadoBola estado = GetComponent<EstadoBola>();
+                if (estado != null && estado.tieneFuerzaExtra)
+                {
+                    multiplicadorFuerza = 2.5f; 
+                }
+
+                rigidBody.AddForce(Camera.main.transform.forward * _force * forceGathered * multiplicadorFuerza, ForceMode.Force);
             }
         }
 
@@ -125,8 +145,9 @@ namespace ThreeDPool.Controllers
             }
             else
             {
-                // SUMAR PUNTO AL GAMEMANAGER
-                GameManager.Instance.AddScore(1);
+                // ROGUELIKE: Mandamos el estado de la bola al sumar puntos
+                EstadoBola estado = GetComponent<EstadoBola>();
+                GameManager.Instance.AddScore(1, estado);
 
                 Rigidbody rb = GetComponent<Rigidbody>();
                 if (rb != null)
@@ -151,6 +172,10 @@ namespace ThreeDPool.Controllers
             IsPocketedInPrevTurn = false;
             _currState = CueBallActionEvent.States.Placing;
             GameManager.Instance.NumOfBallsStriked = 0;
+
+            // ROGUELIKE: Limpiar cartas al reaparecer
+            EstadoBola estado = GetComponent<EstadoBola>();
+            if (estado != null) estado.ResetearEstado();
         }
 
         private void NotifyStationary()
